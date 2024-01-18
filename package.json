@@ -1,0 +1,10 @@
+{
+    "name": "asciidoc-link-check",
+    "version": "0.0.1",
+    "description": "script checks links availability in an asciidoc file",
+    "license": "MIT",
+    "author": {
+        "name": "Alexey Lobzov",
+        "email": "aleks.lobzov@gmail.com"
+    }
+}
