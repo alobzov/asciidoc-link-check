@@ -10,13 +10,60 @@ const readlineInterface = readline.createInterface({
     terminal: false
 });
 
-let stringNumber = 0;
-let match;
 const pattern = /\bhttps?:\/\/[^\s|^[]+\b/g;
 
-readlineInterface.on('line', function(line) {
-    stringNumber++;
-    while ( (match = pattern.exec(line)) !== null) {
-        console.log(`${ stringNumber }:${ match.index }:   200 OK   ${ match[0] }`);
+
+function main(interface) {
+
+    let lineNumber = 0;
+    let match;
+
+    interface.on('line', function(line) {
+
+        lineNumber++;
+        let path;
+        let row;
+        let index;
+        let checkResult;
+
+        while ((match = pattern.exec(line)) !== null) {
+            path = match[0];
+            row = lineNumber;
+            index = match.index;
+            checkResult = checkLink(path).then((value) => {
+                logCheckResult(row, index, value, path);
+            });
+        }
+    });
+}
+
+
+async function checkLink(path) {
+
+    try {
+        const response = await fetch(path);
+        const responseStatus = response.status.toString();
+        const responseText = response.statusText.toString();
+        // console.log(`${ responseStatus } ${ responseText }`);
+        return `${ responseStatus } ${ responseText }`;
     }
-});
+    catch (err) {
+        // console.log('FAILD');
+        return 'FAILD';
+    }
+}
+
+
+async function logCheckResult(lineNumber, matchIndex, checkResult, path) {
+
+    let promise = new Promise((resolve, reject) => {
+        resolve(`${ lineNumber }:${ matchIndex }   ${ checkResult }   ${ path }`);
+    });
+
+    let result = await promise;
+
+    console.log(result);
+}
+
+
+main(readlineInterface);
