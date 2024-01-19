@@ -30,39 +30,23 @@ function main(interface) {
             path = match[0];
             row = lineNumber;
             index = match.index;
-            checkResult = checkLink(path).then((value) => {
-                logCheckResult(row, index, value, path);
-            });
+            checkLink(row, index, path);
         }
     });
 }
 
 
-async function checkLink(path) {
+async function checkLink(lineNumber, matchIndex, path) {
 
     try {
         const response = await fetch(path);
         const responseStatus = response.status.toString();
         const responseText = response.statusText.toString();
-        // console.log(`${ responseStatus } ${ responseText }`);
-        return `${ responseStatus } ${ responseText }`;
+        console.log(`${ lineNumber}:${ matchIndex }   ${ responseStatus } ${ responseText }   ${ path }`);
     }
     catch (err) {
-        // console.log('FAILD');
-        return 'FAILD';
+        console.log(`${ lineNumber}:${ matchIndex }   FAILD   ${ path }`);
     }
-}
-
-
-async function logCheckResult(lineNumber, matchIndex, checkResult, path) {
-
-    let promise = new Promise((resolve, reject) => {
-        resolve(`${ lineNumber }:${ matchIndex }   ${ checkResult }   ${ path }`);
-    });
-
-    let result = await promise;
-
-    console.log(result);
 }
 
 
