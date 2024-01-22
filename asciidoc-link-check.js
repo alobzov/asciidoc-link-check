@@ -2,52 +2,67 @@ const { argv } = require('process');
 const fs = require('fs');
 const readline = require('readline');
 
-const readableStream = fs.createReadStream(argv[2]);
-
-const readlineInterface = readline.createInterface({
-    input: readableStream,
-    output: process.stdout,
-    terminal: false
-});
-
+// regular expression for http- and https-link extraction
 const pattern = /\bhttps?:\/\/[^\s|^[]+\b/g;
 
 
-function main(interface) {
+function asciidocLineCheck(file) {
+
+    const readableStream = fs.createReadStream(file);
+
+    const readlineInterface = readline.createInterface({
+        input: readableStream,
+        output: process.stdout,
+        terminal: false
+    });
 
     let lineNumber = 0;
     let match;
 
-    interface.on('line', function(line) {
+    readlineInterface.on('line', function(line) {
 
         lineNumber++;
-        let path;
-        let row;
-        let index;
-        let checkResult;
 
         while ((match = pattern.exec(line)) !== null) {
-            path = match[0];
-            row = lineNumber;
-            index = match.index;
-            checkLink(row, index, path);
+
+            logCheckLinkResult(lineNumber, match.index, match[0]);
         }
     });
 }
 
-
-async function checkLink(lineNumber, matchIndex, path) {
+/*
+  check link availability function,
+  return http code and status
+*/
+async function checkLink(link) {
 
     try {
-        const response = await fetch(path);
+
+        const response = await fetch(link);
         const responseStatus = response.status.toString();
         const responseText = response.statusText.toString();
-        console.log(`${ lineNumber}:${ matchIndex }   ${ responseStatus } ${ responseText }   ${ path }`);
+
+        return `${ responseStatus } ${ responseText }`;
     }
     catch (err) {
-        console.log(`${ lineNumber}:${ matchIndex }   FAILD   ${ path }`);
+
+        return `FAILED`;
     }
 }
 
+/*
+  log check link result function,
+  return link position and it's availability information
+*/
+async function logCheckLinkResult(row, index, link) {
 
-main(readlineInterface);
+    const checkLinkResult = await checkLink(link);
+
+    console.log(`${ row }:${ index }   ${ checkLinkResult }   ${ link }`);
+}
+
+
+asciidocLineCheck(argv[2]);
+
+
+module.exports = { checkLink, logCheckLinkResult };
