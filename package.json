@@ -1,6 +1,6 @@
 {
     "name": "asciidoc-link-check",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "script checks links availability in an asciidoc file",
     "license": "MIT",
     "author": {
@@ -9,7 +9,7 @@
     },
     "scripts": {
         "asciidoc-link-check": "node asciidoc-link-check.js",
-        "test": "jest"
+        "test": "jest ./test/asciidoc-link-check.test.js"
     },
     "devDependencies": {
         "jest": "^29.7.0"

@@ -1,0 +1,19 @@
+= Test valid file links
+:toc:
+:toc-title: Content
+
+== Test simple link
+
+This is simple http link: http://docs.asciidoctor.org/asciidoc/latest/document-structure/. And https://docs.asciidoctor.org/asciidoc/latest/document-structure/ is it's https analog.
+
+== Test link with alias
+
+http://docs.asciidoctor.org/asciidoc/latest/key-concepts/[http alias] is a simple link with alias.
+
+It's https analog is https://docs.asciidoctor.org/asciidoc/latest/key-concepts/[https alias].
+
+Let's start the test!
+
+== Test angle brackets link
+
+Look! Angle brackets link - <http://docs.asciidoctor.org/asciidoc/latest/document-processing/>, - and it's https analog - <https://docs.asciidoctor.org/asciidoc/latest/document-processing/>

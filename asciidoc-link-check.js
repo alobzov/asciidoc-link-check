@@ -6,28 +6,12 @@ const readline = require('readline');
 const pattern = /\bhttps?:\/\/[^\s|^[]+\b/g;
 
 
-function asciidocLineCheck(file) {
+async function asciidocLinkCheck(file, pattern) {
 
-    const readableStream = fs.createReadStream(file);
+    // 0 - valid link code, -1 - invalid link code
+    const exitCode = await checkFileLinks(file, pattern);
 
-    const readlineInterface = readline.createInterface({
-        input: readableStream,
-        output: process.stdout,
-        terminal: false
-    });
-
-    let lineNumber = 0;
-    let match;
-
-    readlineInterface.on('line', function(line) {
-
-        lineNumber++;
-
-        while ((match = pattern.exec(line)) !== null) {
-
-            logCheckLinkResult(lineNumber, match.index, match[0]);
-        }
-    });
+    console.log(`Exit code: ${ exitCode }`);
 }
 
 /*
@@ -42,11 +26,11 @@ async function checkLink(link) {
         const responseStatus = response.status.toString();
         const responseText = response.statusText.toString();
 
-        return `${ responseStatus } ${ responseText }`;
+        return { exitCode: 0, value: `${ responseStatus } ${ responseText }` };
     }
     catch (err) {
 
-        return `FAILED`;
+        return { exitCode: -1, value: `FAILED` };
     }
 }
 
@@ -57,12 +41,52 @@ async function checkLink(link) {
 async function logCheckLinkResult(row, index, link) {
 
     const checkLinkResult = await checkLink(link);
+    console.log(`${ row }:${ index }   ${ checkLinkResult.value }   ${ link }`);
 
-    console.log(`${ row }:${ index }   ${ checkLinkResult }   ${ link }`);
+    // 0 - valid link code, -1 - invalid link code
+    const exitCode = (checkLinkResult.value === '200 OK') ? 0 : -1;
+    return exitCode;
 }
 
 
-asciidocLineCheck(argv[2]);
+/*
+  check file links function,
+  return file links positions and their availability status
+*/
+async function checkFileLinks(file, pattern) {
+
+    const readableStream = fs.createReadStream(file);
+
+    const readlineInterface = readline.createInterface({
+        input: readableStream,
+        output: process.stdout,
+        terminal: false
+    });
+
+    let lineNumber = 0;
+    let match;
+
+    // 0 - valid link code, -1 - invalid link code
+    let exitCode = 0, res;
+
+    for await (const line of readlineInterface) {
+
+        lineNumber++;
+
+        while ((match = pattern.exec(line)) !== null) {
+
+            res = await logCheckLinkResult(lineNumber, match.index, match[0]);
+            if (res === -1) {
+                exitCode = res;
+            }
+        }
+    }
+
+    return exitCode;
+}
 
 
-module.exports = { checkLink, logCheckLinkResult };
+asciidocLinkCheck(argv[2], pattern);
+
+
+module.exports = { checkLink, logCheckLinkResult, checkFileLinks, pattern };

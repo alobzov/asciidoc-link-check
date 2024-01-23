@@ -1,0 +1,7 @@
+= Test invalid file links
+:toc:
+:toc-title: Content
+
+== Test simple link
+
+This are broken simple links http://docs.asciidocor.org/asciidoc/latest/document-structure/ and https://docs.asciidocor.org/asciidoc/latest/document-structure/. Let's test them!
