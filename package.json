@@ -1,11 +1,19 @@
 {
     "name": "asciidoc-link-check",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "script checks links availability in an asciidoc file",
     "license": "MIT",
     "author": {
         "name": "Alexey Lobzov",
         "email": "aleks.lobzov@gmail.com"
+    },
+    "main": "./asciidoc-link-check.js",
+    "bin": {
+        "asciidoc-link-check": "./asciidoc-link-check.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/alobzov/asciidoc-link-check.git"
     },
     "scripts": {
         "asciidoc-link-check": "node asciidoc-link-check.js",

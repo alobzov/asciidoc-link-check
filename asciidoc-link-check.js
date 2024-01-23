@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const { argv } = require('process');
 const fs = require('fs');
 const readline = require('readline');
