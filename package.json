@@ -1,6 +1,6 @@
 {
     "name": "asciidoc-link-check",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "script checks links availability in an asciidoc file",
     "license": "MIT",
     "author": {

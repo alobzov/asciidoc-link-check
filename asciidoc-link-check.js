@@ -76,7 +76,7 @@ async function checkFileLinks(file, pattern) {
 
         while ((match = pattern.exec(line)) !== null) {
 
-            res = await logCheckLinkResult(lineNumber, match.index, match[0]);
+            res = await logCheckLinkResult(lineNumber, match.index + 1, match[0]);
             if (res === -1) {
                 exitCode = res;
             }
