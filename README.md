@@ -1,8 +1,8 @@
-[![test](https://github.com/alobzov/asciidoc-link-check/actions/workflows/test.yml/badge.svg)](https://github.com/alobzov/blog/actions/workflows/test.yml)
-[![Hits-of-Code](https://hitsofcode.com/github/alobzov/asciidoc-link-check?branch=main&label=Hits-of-Code)](https://hitsofcode.com/github/alobzov/asciidoc-link-check/view?branch=main&label=Hits-of-Code)
-[![My Telegram](https://img.shields.io/badge/Telegram-contact-active?logo=telegram)](https://t.me/alobzov)
+# Asciidoc Link Checker
 
-# Asciidoc Link Check
+[![test](https://github.com/alobzov/asciidoc-link-checker/actions/workflows/test.yml/badge.svg)](https://github.com/alobzov/blog/actions/workflows/test.yml)
+[![Hits-of-Code](https://hitsofcode.com/github/alobzov/asciidoc-link-checker?branch=main&label=Hits-of-Code)](https://hitsofcode.com/github/alobzov/asciidoc-link-checker/view?branch=main&label=Hits-of-Code)
+[![My Telegram](https://img.shields.io/badge/Telegram-contact-active?logo=telegram)](https://t.me/alobzov)
 
 This module extracts links from asciidoc texts and checks whether each link is alive ( 200 OK ) or dead.
 
@@ -19,7 +19,7 @@ yarn test
 Run
 
 ```shell
-yarn asciidoc-link-check ./test/data/valid-links-file.adoc
+yarn asciidoc-link-checker ./test/data/valid-links-file.adoc
 ```
 
 The exit code would be `0` and every link found is alive ( 200 OK ).
@@ -39,7 +39,7 @@ Exit code: 0
 Run
 
 ```shell
-yarn asciidoc-link-check ./test/data/invalid-links-file.adoc
+yarn asciidoc-link-checker ./test/data/invalid-links-file.adoc
 ```
 
 The exit code would be `-1` and every link found is not alive.

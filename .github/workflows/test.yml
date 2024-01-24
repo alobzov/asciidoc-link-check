@@ -1,4 +1,4 @@
-name: asciidoc-link-check-test
+name: test
 
 on: [push]
 

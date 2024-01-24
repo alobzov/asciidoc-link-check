@@ -1,4 +1,4 @@
-const { checkLink, logCheckLinkResult, checkFileLinks, pattern } = require('../asciidoc-link-check');
+const { checkLink, logCheckLinkResult, checkFileLinks, pattern } = require('../asciidoc-link-checker');
 
 
 describe('test checkLink function', () => {
