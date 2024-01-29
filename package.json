@@ -1,6 +1,6 @@
 {
     "name": "asciidoc-link-checker",
-    "version": "0.0.12",
+    "version": "0.1.0",
     "description": "Module checks links availability in an asciidoc file",
     "license": "MIT",
     "author": {

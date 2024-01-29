@@ -1,17 +1,17 @@
 # Asciidoc Link Checker
 
-[![test](https://github.com/alobzov/asciidoc-link-checker/actions/workflows/test.yml/badge.svg)](https://github.com/alobzov/blog/actions/workflows/test.yml)
+[![test](https://github.com/alobzov/asciidoc-link-checker/actions/workflows/test.yml/badge.svg)](https://github.com/alobzov/asciidoc-link-checker/actions/workflows/test.yml)
 [![Hits-of-Code](https://hitsofcode.com/github/alobzov/asciidoc-link-checker?branch=main&label=Hits-of-Code)](https://hitsofcode.com/github/alobzov/asciidoc-link-checker/view?branch=main&label=Hits-of-Code)
 [![My Telegram](https://img.shields.io/badge/Telegram-contact-active?logo=telegram)](https://t.me/alobzov)
 
 This module extracts links from asciidoc texts and checks whether each link is alive ( 200 OK ) or dead.
 
-## Test
+## Installation through Yarn
 
-To test the module simply run
+To install the module simply run
 
 ```shell
-yarn test
+yarn add asciidoc-link-checker@0.1.0
 ```
 
 ## Valid Links Example
@@ -49,3 +49,11 @@ The exit code would be `-1` and every link found is not alive.
 7:97   FAILED   https://docs.asciidocor.org/asciidoc/latest/document-structure
 Exit code: -1
 ```
+
+## Input File Validation
+
+If the input file is undefined, the exit code would be `-2`.
+
+If the input file is not adoc, the exit code would be `-3`.
+
+If the input file is empty, the exit code would be `-4`.
