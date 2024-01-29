@@ -3,16 +3,29 @@ const { argv } = require('process');
 const fs = require('fs');
 const readline = require('readline');
 
-// regular expression for http- and https-link extraction
-const pattern = /\bhttps?:\/\/[^\s|^[]+\b/g;
 
+async function asciidocLinkCheck(file) {
 
-async function asciidocLinkCheck(file, pattern) {
+    let exitCode;
 
-    // 0 - valid link code, -1 - invalid link code
-    const exitCode = await checkFileLinks(file, pattern);
+    if ( file === undefined ) {
 
+        // -2 - file is undefined
+        exitCode = -2;
+    } else {
+
+        if ( file.split('.').at(-1) === "adoc" ) {
+
+            // 0 - all links are valid, -1 - one of the links is invalid
+            exitCode = await checkFileLinks(file);
+        } else {
+
+            // -3 - is not adoc file
+            exitCode = -3;
+        }
+    }
     console.log(`Exit code: ${ exitCode }`);
+    return exitCode;
 }
 
 /*
@@ -54,40 +67,50 @@ async function logCheckLinkResult(row, index, link) {
   check file links function,
   return file links positions and their availability status
 */
-async function checkFileLinks(file, pattern) {
+async function checkFileLinks(file) {
 
-    const readableStream = fs.createReadStream(file);
+    try {
 
-    const readlineInterface = readline.createInterface({
-        input: readableStream,
-        output: process.stdout,
-        terminal: false
-    });
+        // regular expression for http- and https-link extraction
+        const pattern = /\bhttps?:\/\/[^\s|^[]+\b/g;
 
-    let lineNumber = 0;
-    let match;
+        const readableStream = fs.createReadStream(file);
 
-    // 0 - valid link code, -1 - invalid link code
-    let exitCode = 0, res;
+        const readlineInterface = readline.createInterface({
+            input: readableStream,
+            output: process.stdout,
+            terminal: false
+        });
 
-    for await (const line of readlineInterface) {
+        let lineNumber = 0;
+        let match;
 
-        lineNumber++;
+        // 0 - valid link code, -1 - invalid link code
+        let exitCode = 0, res;
 
-        while ((match = pattern.exec(line)) !== null) {
+        for await (const line of readlineInterface) {
 
-            res = await logCheckLinkResult(lineNumber, match.index + 1, match[0]);
-            if (res === -1) {
-                exitCode = res;
+            lineNumber++;
+
+            while ((match = pattern.exec(line)) !== null) {
+
+                res = await logCheckLinkResult(lineNumber, match.index + 1, match[0]);
+                if (res === -1) {
+                    exitCode = res;
+                }
             }
         }
-    }
 
-    return exitCode;
+        return exitCode;
+    } catch (err) {
+
+        // -4 - no such file
+        return -4
+    }
 }
 
 
-asciidocLinkCheck(argv[2], pattern);
+asciidocLinkCheck(argv[2]);
 
 
-module.exports = { checkLink, logCheckLinkResult, checkFileLinks, pattern };
+module.exports = { checkLink, logCheckLinkResult, checkFileLinks, asciidocLinkCheck };

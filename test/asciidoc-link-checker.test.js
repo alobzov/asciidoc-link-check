@@ -1,4 +1,4 @@
-const { checkLink, logCheckLinkResult, checkFileLinks, pattern } = require('../asciidoc-link-checker');
+const { checkLink, logCheckLinkResult, checkFileLinks, asciidocLinkCheck } = require('../asciidoc-link-checker');
 
 
 describe('test checkLink function', () => {
@@ -49,17 +49,36 @@ describe('test logCheckLinkResult function', () => {
 describe('test checkFileLinks function', () => {
 
     it('test valid links adoc file', async () => {
-        const exitCode = await checkFileLinks('./test/data/valid-links-file.adoc', pattern);
+        const exitCode = await checkFileLinks('./test/data/valid-links-file.adoc');
         expect(exitCode).toBe(0);
     });
 
     it('test invalid links adoc file', async () => {
-        const exitCode = await checkFileLinks('./test/data/invalid-links-file.adoc', pattern);
+        const exitCode = await checkFileLinks('./test/data/invalid-links-file.adoc');
         expect(exitCode).toBe(-1);
     });
 
     it('test mixed links adoc file', async () => {
-        const exitCode = await checkFileLinks('./test/data/mixed-links-file.adoc', pattern);
+        const exitCode = await checkFileLinks('./test/data/mixed-links-file.adoc');
         expect(exitCode).toBe(-1);
+    });
+});
+
+
+describe('test asciidocLinkCheck function', () => {
+
+    it('test undefined file processing', async () => {
+        const exitCode = await asciidocLinkCheck();
+        expect(exitCode).toBe(-2);
+    });
+
+    it('test non-adoc file processing', async () => {
+        const exitCode = await asciidocLinkCheck('./test/data/txt-file.txt');
+        expect(exitCode).toBe(-3);
+    });
+
+    it('test empty file processing', async () => {
+        const exitCode = await asciidocLinkCheck('./test/data/empty-file.adoc');
+        expect(exitCode).toBe(-4);
     });
 });
